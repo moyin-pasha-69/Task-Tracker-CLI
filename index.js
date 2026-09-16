@@ -43,14 +43,15 @@ function saveTasks(tasksList) {
 function addTask(task) {
   const tasksList = loadTasks();
   const time = getCurrentTime();
+  const index = tasksList.length + 1;
   tasksList.push({
-    id: Date.now(),
+    id: index,
     desc: task,
     status: "todo",
     createdAt: time,
     updateAt: time,
   });
-  const index = tasksList.length;
+
   saveTasks(tasksList);
   console.log(`task added successfully! (ID:${index})`);
 }
@@ -62,4 +63,12 @@ function removeTask(value) {
   tasksList.splice(value - 1, 1);
   saveTasks(tasksList);
   console.log(`task removed successfully! (ID:${value})`);
+}
+function updateTasks(pos, task) {
+  const tasksList = loadTasks();
+  const position = parseInt(pos) - 1;
+  tasksList[position].desc = task;
+  tasksList[position].updateAt = getCurrentTime();
+  saveTasks(tasksList);
+  console.log(`task updated successfully! (ID:${position + 1})`);
 }
