@@ -11,7 +11,7 @@ if (command == "add") {
   addTask(arg1);
 } else if (command == "dlt") {
   removeTask(arg1);
-} else if (command == "udt") {
+} else if (command == "modify") {
   updateTasks(arg1, arg2);
 } else if (command == "mark-as-progress") {
   updateStatus(command);
@@ -53,4 +53,13 @@ function addTask(task) {
   const index = tasksList.length;
   saveTasks(tasksList);
   console.log(`task added successfully! (ID:${index})`);
+}
+function removeTask(value) {
+  const tasksList = loadTasks();
+  if (tasksList.length == 0) {
+    console.log("there is no tasks!");
+  }
+  tasksList.splice(value - 1, 1);
+  saveTasks(tasksList);
+  console.log(`task removed successfully! (ID:${value})`);
 }
