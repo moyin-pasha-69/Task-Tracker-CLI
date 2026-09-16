@@ -1,0 +1,56 @@
+const { log } = require("console");
+const fs = require("fs");
+const { stringify } = require("querystring");
+const filePath = "./taskList.json";
+
+const command = process.argv[2];
+const arg1 = process.argv[3];
+const arg2 = process.argv[4];
+
+if (command == "add") {
+  addTask(arg1);
+} else if (command == "dlt") {
+  removeTask(arg1);
+} else if (command == "udt") {
+  updateTasks(arg1, arg2);
+} else if (command == "mark-as-progress") {
+  updateStatus(command);
+} else if (command == "mark-as-done") {
+  updateStatus(command);
+} else if (command == "lst") {
+  showList(arg1);
+}
+
+function loadTasks() {
+  try {
+    const dataBuffer = fs.readFileSync(filePath);
+    const dataJSON = dataBuffer.toString();
+    return JSON.parse(dataJSON);
+  } catch (error) {
+    return [];
+  }
+}
+function getCurrentTime() {
+  const currentTimeDate = new Date();
+  const date = { day: "2-digit", month: "short", year: "numeric" };
+  const time = { hour: "2-digit", minute: "2-digit" };
+  return `${currentTimeDate.toLocaleDateString("en-GB", date)} ${currentTimeDate.toLocaleTimeString([], time)}`;
+}
+function saveTasks(tasksList) {
+  const dataJSON = JSON.stringify(tasksList);
+  return fs.writeFileSync(filePath, dataJSON);
+}
+function addTask(task) {
+  const tasksList = loadTasks();
+  const time = getCurrentTime();
+  tasksList.push({
+    id: Date.now(),
+    desc: task,
+    status: "todo",
+    createdAt: time,
+    updateAt: time,
+  });
+  const index = tasksList.length;
+  saveTasks(tasksList);
+  console.log(`task added successfully! (ID:${index})`);
+}
