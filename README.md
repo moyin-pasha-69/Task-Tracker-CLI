@@ -1,5 +1,3 @@
 # Task-Tracker-CLI
 
-Creating a CLI Task tracker to get know the basics of backed engineering
-
-# Hello Backend
+get the idea of this project from https://roadmap.sh/projects/task-tracker. if you want to try then click and build it
