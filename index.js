@@ -59,10 +59,11 @@ function removeTask(value) {
   const tasksList = loadTasks();
   if (tasksList.length == 0) {
     console.log("there is no tasks!");
+  } else {
+    tasksList.splice(value - 1, 1);
+    saveTasks(tasksList);
+    console.log(`task removed successfully! (ID:${value})`);
   }
-  tasksList.splice(value - 1, 1);
-  saveTasks(tasksList);
-  console.log(`task removed successfully! (ID:${value})`);
 }
 function updateTasks(pos, task) {
   const tasksList = loadTasks();
@@ -72,24 +73,57 @@ function updateTasks(pos, task) {
   saveTasks(tasksList);
   console.log(`task updated successfully! (ID:${position + 1})`);
 }
-function showList(task) {
+function showList(show) {
   const taskList = loadTasks();
   console.log("=========================================================");
   console.log("\t\t\tTASK LIST");
   console.log("=========================================================");
-  showAllTasks(taskList);
+  if (show == "done") {
+    renderTasks(taskList.filter((task) => task.status == "done"));
+  } else if (show == "todo") {
+    renderTasks(taskList.filter((task) => task.status == "todo"));
+  } else if (show == "in-progress") {
+    renderTasks(taskList.filter((task) => task.status == "in-progress"));
+  } else {
+    renderTasks(taskList);
+  }
+  const doneTasks = taskList.reduce((acc, curr) => {
+    if (curr.status == "done") {
+      acc++;
+    }
+    return acc;
+  }, 0);
+  const inProgressTasks = taskList.reduce((acc, curr) => {
+    if (curr.status == "in-progress") {
+      acc++;
+    }
+    return acc;
+  }, 0);
+  const todoTasks = taskList.reduce((acc, curr) => {
+    if (curr.status == "todo") {
+      acc++;
+    }
+    return acc;
+  }, 0);
   console.log("=========================================================");
-  console.log(`Total Task : ${taskList.length}`);
+  console.log(
+    `Done Tasks: ${doneTasks},Todo Tasks: ${todoTasks},In-Progress Tasks: ${inProgressTasks},Total Task : ${taskList.length},`,
+  );
+  console.log("=========================================================");
 }
-function showAllTasks(taskList) {
-  taskList.forEach((task) => {
-    console.log(
-      `ID: ${task.id}\nDescription: ${task.desc}\nStatus: ${task.status}\nCreated At: ${task.createdAt}\nUpdated At: ${task.updateAt}`,
-    );
-    console.log(
-      "-------------------------------------------------------------",
-    );
-  });
+function renderTasks(list) {
+  if (list.length == 0) {
+    console.log("there is no task!");
+  } else {
+    list.forEach((task) => {
+      console.log(
+        `ID: ${task.id}\nDescription: ${task.desc}\nStatus: ${task.status}\nCreated At: ${task.createdAt}\nUpdated At: ${task.updateAt}`,
+      );
+      console.log(
+        "-------------------------------------------------------------",
+      );
+    });
+  }
 }
 function updateStatus(command, id) {
   const tasksList = loadTasks();
