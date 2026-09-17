@@ -14,9 +14,9 @@ if (command == "add") {
 } else if (command == "modify") {
   updateTasks(arg1, arg2);
 } else if (command == "mark-as-progress") {
-  updateStatus(command);
+  updateStatus(command, arg1);
 } else if (command == "mark-as-done") {
-  updateStatus(command);
+  updateStatus(command, arg1);
 } else if (command == "lst") {
   showList(arg1);
 }
@@ -71,4 +71,25 @@ function updateTasks(pos, task) {
   tasksList[position].updateAt = getCurrentTime();
   saveTasks(tasksList);
   console.log(`task updated successfully! (ID:${position + 1})`);
+}
+function showList(task) {
+  const taskList = loadTasks();
+  console.log("=========================================================");
+  console.log("\t\t\tTASK LIST");
+  console.log("=========================================================");
+  // console.log("ID\tDescription\t\t\tStatus\t\tCreated At updated At");
+  showAllTasks(taskList);
+  console.log("=========================================================");
+  console.log(`Total Task : ${taskList.length}`);
+}
+
+function showAllTasks(taskList) {
+  taskList.forEach((task) => {
+    console.log(
+      `ID: ${task.id}\nDescription: ${task.desc}\nStatus: ${task.status}\nCreated At: ${task.createdAt}\nUpdated At: ${task.updateAt}`,
+    );
+    console.log(
+      "-------------------------------------------------------------",
+    );
+  });
 }
